@@ -17,11 +17,6 @@ const firebaseConfig = {
     "https://mantas-26a39-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-const dataBase = getDatabase(app);
 
 const inputProductCode = document.querySelector("#inputProductCode");
 const inputProductName = document.querySelector("#inputProductName");
@@ -32,19 +27,22 @@ const updateButton = document.querySelector("#updateBtn");
 const deleteButton = document.querySelector("#deleteBtn");
 const findButton = document.querySelector("#selectBtn");
 
-function insertData() {
-  //   evt.preventDefault();
+const app = initializeApp(firebaseConfig);
+const dataBase = getDatabase(app);
+
+function insertData(e) {
+  e.preventDefault();
   set(ref(dataBase, "Products/" + inputProductCode.value), {
     ID: inputProductCode.value,
     Name: inputProductName.value,
     Quantity: inputProductQuantity.value,
-  });
-  //   .then(() => {
-  //     alert("data added bro");
-  //   }).catch((error) => {
-  //     alert(`ya dun goofed. ${error}`);
-  //   });
+  })
+    .then(() => {
+      alert("data added bro");
+    }).catch((error) => {
+      alert(`ya dun goofed. ${error}`);
+    });
 }
 
-insertButton.addEventListener("click", insertData());
+insertButton.addEventListener("click", insertData);
 console.log(getDatabase());
