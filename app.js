@@ -103,6 +103,18 @@ function updateData(e) {
 
   get(child(ref(dataBase), "Products/" + newProductId))
     .then((snapshot) => {
+      if (inputProductCode.value.length === 0) {
+        alert("forgot id idiot");
+        return;
+      }
+      if (inputProductName.value.length === 0) {
+        alert("forgot name idiot");
+        return;
+      }
+      if (inputProductQuantity.value.length === 0) {
+        alert("forgot quantity idiot");
+        return;
+      }
       if (snapshot.exists()) {
         set(ref(dataBase, "Products/" + newProductId), {
           ID: newProductId,
@@ -126,34 +138,13 @@ function updateData(e) {
     });
 }
 
-deleteButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (productCode.value.length <= 0) {
-    alert("Product code can not be blank!");
-    return;
-  }
-  if (productName.value.length === "") {
-    return;
-  }
-  if (productQuantity.value.length === "") {
-    return;
-  }
-  const productRef = ref(db, "products/" + productCode.value);
-  get(productRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        remove(productRef);
-        alert("Deleted successfully!");
-      } else {
-        alert("Product with this code does not exist!");
-      }
-    })
-    .catch((error) => {
-      console.log("Error deleting data:", error);
-    });
-});
+function removeData() {
+  remove(ref(dataBase, "Products/" + inputProductCode.value), {})
+    .then(() => {})
+    .catch((error) => {});
+}
 
 insertButton.addEventListener("click", insertData);
 findButton.addEventListener("click", findData);
 updateButton.addEventListener("click", updateData);
-
+deleteButton.addEventListener("click", removeData);
